@@ -28,8 +28,6 @@
 
       <div id="services-container" class="space-y-2"></div>
     </div>
-
-    <!-- Total -->
     <div class="text-right text-xl font-bold">
       Total: R$ <span id="total-price">0,00</span>
     </div>
@@ -84,10 +82,8 @@
     checkbox.addEventListener('change', updateTotal);
     container.appendChild(clone);
   });
-
   lucide.createIcons();
 
-  // Enviar via WhatsApp
   document.getElementById('send-btn').addEventListener('click', () => {
     const selected = [...document.querySelectorAll('.service-checkbox')]
       .filter(cb => cb.checked)
