@@ -8,8 +8,10 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    
   <div id="app" class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-3xl space-y-8">
-    <h1 class="text-2xl font-bold text-center mb-4">Montar Proposta de Serviços</h1>
+    <h1 class="text-2xl font-bold text-center mb-4">Proposta preliminar de Serviços</h1>
+    <p class="text-center">Elton, Selecione os tópicos abaixo</p>
 
     <!-- Serviços -->
     <div class="space-y-4">
@@ -41,12 +43,11 @@
 
 <script>
   const services = [
-    { name: 'Redes Lógicas & Infraestrutura de TI', price: 1550, desc: 'Projeto de cabeamento, instalação e certificação, montagem de racks, switching & Wi‑Fi corporativo.' },
-    { name: 'Automação & Elétrica Inteligente', price: 890, desc: 'Quadros de automação, sensoriamento em obras, controle de iluminação e integração Homeassistant.' },
-    { name: 'Suporte de Informática', price: 500, desc: 'Help Desk Nível 1 e 2, gestão de licenças, suporte a impressão e treinamento de usuários.' },
-    { name: 'Desenvolvimento & Integrações', price: 675, desc: 'Dashboards de obra, integrações ERP↔Campo, IoT & Telemetria, scripts de automação.' },
-    { name: 'Segurança & Compliance', price: 900, desc: 'CFTV IP, controle de acesso, políticas de backup e conformidade LGPD.' },
-    { name: 'Dev. Software & Apps Mobile', price: 1300, desc: 'Criação de aplicativos mobile multiplataforma, integração com Obra Prima via API para acompanhamento e gestão em tempo real.' }
+    { name: 'Redes Lógicas & Infraestrutura de TI', price: 1000, desc: 'Cabeamento estruturado, racks, Wi-Fi corporativo, help-desk, impressão, licenças e backups.' },
+    { name: 'AutoAutomação & Segurança', price: 1000, desc: 'Quadros de automação, sensoriamento, controle de iluminação, CFTV IP, controle de acesso e LGPD.' },
+    { name: 'Desenvolvimento & Integrações', price: 1000, desc: 'Dashboards (AppSheet/Sheets), integrações ERP↔Campo, IoT, scripts automáticos.' },
+    { name: 'Apps Mobile & Integração Obra Prima', price: 1000, desc: 'Apps Android/iOS personalizados com sincronização à plataforma Obra Prima via API.' },
+   
   ];
 
   const template = document.getElementById('service-template');
