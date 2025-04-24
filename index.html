@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calculadora de Proposta de Serviços</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div id="app" class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-3xl space-y-8">
+    <h1 class="text-2xl font-bold text-center mb-4">Montar Proposta de Serviços</h1>
+
+    <!-- Serviços -->
+    <div class="space-y-4">
+      <template id="service-template">
+        <div class="service-card bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition cursor-pointer">
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" class="service-checkbox h-5 w-5 text-blue-600 rounded" />
+              <span class="font-medium service-name"></span>
+            </label>
+            <span class="font-semibold">R$ <span class="service-price"></span></span>
+          </div>
+          <p class="service-desc text-sm text-gray-600 mt-2"></p>
+        </div>
+      </template>
+
+      <div id="services-container" class="space-y-2"></div>
+    </div>
+    <div class="text-right text-xl font-bold">
+      Total: R$ <span id="total-price">0,00</span>
+    </div>
+
+    <!-- Botão WhatsApp -->
+    <button id="send-btn" class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-blue-700 transition">
+      <i data-lucide="send"></i>
+      Enviar Proposta via WhatsApp
+    </button>
+  </div>
+
+<script>
+  const services = [
+    { name: 'Redes Lógicas & Infraestrutura de TI', price: 1550, desc: 'Projeto de cabeamento, instalação e certificação, montagem de racks, switching & Wi‑Fi corporativo.' },
+    { name: 'Automação & Elétrica Inteligente', price: 1125, desc: 'Quadros de automação, sensoriamento em obras, controle de iluminação e integração Homeassistant.' },
+    { name: 'Suporte de Informática', price: 323, desc: 'Help Desk Nível 1 e 2, gestão de licenças, suporte a impressão e treinamento de usuários.' },
+    { name: 'Desenvolvimento & Integrações', price: 675, desc: 'Dashboards de obra, integrações ERP↔Campo, IoT & Telemetria, scripts de automação.' },
+    { name: 'Segurança & Compliance', price: 225, desc: 'CFTV IP, controle de acesso, políticas de backup e conformidade LGPD.' },
+    { name: 'Dev. Software & Apps Mobile', price: 1800, desc: 'Criação de aplicativos mobile multiplataforma, integração com Obra Prima via API para acompanhamento e gestão em tempo real.' }
+  ];
+
+  const template = document.getElementById('service-template');
+  const container = document.getElementById('services-container');
+  const totalSpan = document.getElementById('total-price');
+
+  function formatPrice(v){
+    return v.toLocaleString('pt-BR', {minimumFractionDigits:2});
+  }
+
+  function updateTotal(){
+    const total = [...document.querySelectorAll('.service-checkbox')]
+      .filter(cb => cb.checked)
+      .reduce((sum, cb) => sum + Number(cb.dataset.price), 0);
+    totalSpan.textContent = formatPrice(total);
+    return total;
+  }
+
+  // Renderizar serviços
+  services.forEach(s => {
+    const clone = template.content.cloneNode(true);
+    const checkbox = clone.querySelector('.service-checkbox');
+    checkbox.dataset.price = s.price;
+    clone.querySelector('.service-name').textContent = s.name;
+    clone.querySelector('.service-price').textContent = formatPrice(s.price);
+    clone.querySelector('.service-desc').textContent = s.desc;
+
+    clone.querySelector('.service-card').addEventListener('click', (e)=>{
+      if(e.target.tagName !== 'INPUT') checkbox.checked = !checkbox.checked;
+      updateTotal();
+    });
+
+    checkbox.addEventListener('change', updateTotal);
+    container.appendChild(clone);
+  });
+  lucide.createIcons();
+
+  document.getElementById('send-btn').addEventListener('click', () => {
+    const selected = [...document.querySelectorAll('.service-checkbox')]
+      .filter(cb => cb.checked)
+      .map(cb => `• ${cb.parentElement.querySelector('.service-name').textContent} — R$ ${formatPrice(cb.dataset.price)}`);
+    if(selected.length === 0){
+      alert('Selecione ao menos um serviço.');
+      return;
+    }
+    const total = updateTotal();
+    const msg = encodeURIComponent(
+      `Olá! Segue proposta preliminar de serviços:\n\n${selected.join('\n')}\n\nTotal mensal: R$ ${formatPrice(total)}\n`);
+    const phone = '5595981237919';
+    const url = `https://wa.me/${phone}?text=${msg}`;
+    window.open(url, '_blank');
+  });
+</script>
+</body>
+</html>
